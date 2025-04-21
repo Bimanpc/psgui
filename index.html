@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell GUI</title>
+    <script>
+        function runPowerShellScript() {
+            const { spawn } = require('child_process');
+            const ps = spawn("powershell.exe", ["-File", "C:\\path\\to\\your\\script.ps1"]);
+
+            ps.stdout.on("data", data => {
+                console.log(data.toString());
+                document.getElementById('output').innerText = data.toString();
+            });
+
+            ps.stderr.on("data", data => {
+                console.error(data.toString());
+            });
+
+            ps.on('exit', code => {
+                console.log(`Child exited with code ${code}`);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>PowerShell GUI</h1>
+    <button onclick="runPowerShellScript()">Run Script</button>
+    <pre id="output"></pre>
+</body>
+</html>
